@@ -29,7 +29,7 @@ disable_password_authentication = false
     inline = [
       "sudo apt-get update -y",
       "sudo apt-get install -y nginx",
-      "sudo systemctl enable nginx",
+      "sudo systemctl enable nginx || true",
       "sudo systemctl start nginx"
     ]
 

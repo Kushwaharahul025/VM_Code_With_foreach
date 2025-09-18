@@ -6,9 +6,9 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name ="testrg"
-    storage_account_name = "testsg"
-    container_name = "hello"
+    resource_group_name ="rahulrg"
+    storage_account_name = "rahulstg"
+    container_name = "hello1"
     key = "new.terraform.tfstate"
     
   }
@@ -16,7 +16,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = "76095b6e-0585-402e-8e43-281835aebfd1"
+  subscription_id = "dfad8f6a-4ed1-4448-b795-d396ad2c60db"
 
 }
 

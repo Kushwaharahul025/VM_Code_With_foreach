@@ -1,6 +1,6 @@
 module "rg_resource" {
   for_each = var.rg1
-  source   = "../../Module/azure_resource_grp"
+  source   = "../Module/azure_resource_grp"
   rg_name  = each.value.rg_name 
   location = each.value.location
 }
@@ -8,7 +8,7 @@ module "rg_resource" {
 module"vnet" {
   for_each = var.vnet
   depends_on = [ module.rg_resource ]
-  source = "../../Module/azure_vnet"
+  source = "../Module/azure_vnet"
   rg_name  = each.value.rg_name 
   location = each.value.location
   vnet_name = each.value.vnet_name
@@ -18,7 +18,7 @@ module"vnet" {
 module "frontendsub" {
   for_each = var.sub1
   depends_on = [ module.rg_resource,module.vnet ]
-  source = "../../Module/azure_subnet"
+  source = "../Module/azure_subnet"
   subnet_name = each.value.subnet_name
   rg_name  = each.value.rg_name 
   vnet_name = each.value.vnet_name
@@ -37,7 +37,7 @@ output "subnet_ids" {
 module "rohitnsg" {
   for_each = var.nsg1
   depends_on = [module.rg_resource ]
-  source = "../../Module/azurerm_nsg"
+  source = "../Module/azurerm_nsg"
   rg_name  = each.value.rg_name 
   location = each.value.location
   nsg_name = each.value.nsg_name
@@ -50,7 +50,7 @@ module "rohitnsg" {
 module "frontnic" {
   for_each = var.nic
   depends_on = [ module.rg_resource,module.frontendsub,module.vnet ]
-  source = "../../Module/azurerm_nic"
+  source = "../Module/azurerm_nic"
     rg_name  = each.value.rg_name 
   location = each.value.location
   nic_name = each.value.nic_name
@@ -70,7 +70,7 @@ output "nic_ids" {
 module "pip" {
   for_each = var.pip
   depends_on = [ module.rg_resource ]
-  source = "../../Module/azurerm_pip"
+  source = "../Module/azurerm_pip"
   rg_name  = each.value.rg_name
   location = each.value.location
   pip_name = each.value.pip_name
@@ -103,7 +103,7 @@ locals {
 module "asso" {
   for_each   = module.frontnic
   depends_on = [module.frontnic, module.rohitnsg]
-  source     = "../../Module/azurerm_association"
+  source     = "../Module/azurerm_association"
 
   nic_id = each.value.nic_id
   nsg_id = module.rohitnsg["rohitnsg"].nsg_id
@@ -113,7 +113,7 @@ module "asso" {
 module "frontvm" {
   for_each = var.vm1
   depends_on = [ module.rg_resource,module.vnet,module.frontnic,module.pip ]
-  source = "../../Module/azurerm_virtual_machine"
+  source = "../Module/azurerm_virtual_machine"
   rg_name  = each.value.rg_name
   location = each.value.location
    vm_name = each.value.vm_name
