@@ -40,7 +40,7 @@ jobs:
         working-directory: dev
                 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -no-color -input=false
+        run: terraform plan -out=tfplan 
         working-directory: dev
 
       - name: Terraform Apply
