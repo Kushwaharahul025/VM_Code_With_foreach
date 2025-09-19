@@ -14,7 +14,7 @@ permissions:
   
 jobs: 
   terraform-init-plan:
-    runs-on: runkro   # change to ubuntu-latest if not using self-hosted
+    runs-on: runkro   # change to ubuntu-latest if not using self-hostedh
     steps: 
       - name: Checkout
         uses: actions/checkout@v5.0.0
