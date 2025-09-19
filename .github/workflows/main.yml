@@ -1,0 +1,46 @@
+name: "Dev Terraform Workflow"
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main      
+
+permissions:
+  id-token: write
+  contents: read
+  
+jobs: 
+  terraform-init-plan:
+    runs-on: runkro   # change to ubuntu-latest if not using self-hosted
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+    
+      - name: Azure Login
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+            
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        
+      - name: Terraform Init
+        id: init
+        run: terraform init  
+        
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+                
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan -no-color -input=false
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
